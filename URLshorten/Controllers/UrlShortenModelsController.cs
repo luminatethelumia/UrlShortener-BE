@@ -89,17 +89,17 @@ namespace URLshorten.Controllers
         }
 
         [HttpPut("/api/edit-origin")]
-        public async Task<IActionResult> PutUrlOrigin([FromBody] UrlDto url)
+        public async Task<IActionResult> PutUrlOrigin(string code, UrlDto url)
         {
             // Find the existing record by the old code
-            var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.Url == url.OldUrl);
+            var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.Code == code);
 
             if (existingUrl == null)
             {
                 return NotFound($"No URL found.");
             }
 
-            var result = url.NewUrl;
+            var result = url.Url;
 
             existingUrl.Url = result;
 
