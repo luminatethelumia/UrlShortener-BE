@@ -1,4 +1,4 @@
-namespace URLshorten
+namespace Gateway
 {
     public class WeatherForecast
     {

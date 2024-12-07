@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 
 namespace URLshorten.Controllers
 {
+    [Route("api")]
     [ApiController]
     public class UrlShortenModelsController : ControllerBase
     {
@@ -22,7 +23,7 @@ namespace URLshorten.Controllers
         }
 
         
-        [HttpGet("/")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<UrlShortenModel>>> GetUrlShortenModel()
         {
             return await _context.UrlShortenModel.ToListAsync();
@@ -56,7 +57,7 @@ namespace URLshorten.Controllers
             return File(shortenedUrl.QRImage, "image/png");
         }
 
-        [HttpPut("/api/edit-shorten")]
+        [HttpPut("edit-shorten")]
         public async Task<IActionResult> PutUrlShorten(string code, UrlDto url)
         {
             // Find the existing record by the old code
@@ -88,18 +89,18 @@ namespace URLshorten.Controllers
             });
         }
 
-        [HttpPut("/api/edit-origin")]
-        public async Task<IActionResult> PutUrlOrigin([FromBody] UrlDto url)
+        [HttpPut("edit-origin")]
+        public async Task<IActionResult> PutUrlOrigin(string code, UrlDto url)
         {
             // Find the existing record by the old code
-            var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.Url == url.OldUrl);
+            var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.Code == code);
 
             if (existingUrl == null)
             {
                 return NotFound($"No URL found.");
             }
 
-            var result = url.NewUrl;
+            var result = url.Url;
 
             existingUrl.Url = result;
 
@@ -113,7 +114,7 @@ namespace URLshorten.Controllers
         }
 
 
-        [HttpPost("api/Shorten")]
+        [HttpPost("Shorten")]
         public async Task<ActionResult<UrlShortenModel>> PostUrlShortenModel(UrlDto url)
         {
             // validating the uri
@@ -159,7 +160,7 @@ namespace URLshorten.Controllers
         }
 
         // DELETE: api/UrlShortenModels/5
-        [HttpDelete("api/delete-shorten")]
+        [HttpDelete("delete-shorten")]
         public async Task<IActionResult> DeleteUrlShortenModel(UrlDto url)
         {
             var shortenedUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.ShortUrl == url.Url);// check the existance of uri in db

@@ -1,0 +1,204 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:8888"
+  },
+  "Routes": [
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/{code}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/{code}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/qrcode/{code}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/qrcode/{code}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/edit-shorten",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/edit-shorten",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/edit-origin",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/edit-origin",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/Shorten",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Shorten",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    },
+
+
+
+    {
+      "UpstreamPathTemplate": "/UrlShorten/delete-shorten",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/delete-shorten",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3000
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 5,
+        "QuotaExceededMessage": "Too Many Requests",
+        "HttpsStatusCode": 429
+      },
+      "FileCacheOptions": {
+        "Region": "shorten-cache",
+        "TtlSeconds": 15
+      }
+    }
+
+
+
+
+   
+
+
+  ]
+}
