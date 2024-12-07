@@ -77,6 +77,7 @@ namespace URLshorten.Controllers
             var result = $"{this.Request.Scheme}://{this.Request.Host}/{code}";
 
             existingUrl.ShortUrl = result;
+            existingUrl.Code = code;
 
             _context.UrlShortenModel.Update(existingUrl);
             await _context.SaveChangesAsync();
