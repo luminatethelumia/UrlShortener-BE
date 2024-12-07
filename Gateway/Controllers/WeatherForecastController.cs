@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace URLshorten.Controllers
+namespace Gateway.Controllers
 {
     [ApiController]
     [Route("[controller]")]
