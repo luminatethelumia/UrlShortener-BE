@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ShortenURL.Abstractions;
 using URLshorten.Data;
 using URLshorten.Models;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace URLshorten.Controllers
 {
@@ -39,9 +42,22 @@ namespace URLshorten.Controllers
             return Redirect(shortenedUrl.Url);
             
         }
-        
+
+        [HttpGet("qrcode/{code}")]
+        public async Task<IActionResult> GetQrCode(string code)
+        {
+            var shortenedUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(s => s.Code == code);
+
+            if (shortenedUrl == null || shortenedUrl.QRImage == null)
+            {
+                return NotFound("QR code not found for the specified URL.");
+            }
+
+            return File(shortenedUrl.QRImage, "image/png");
+        }
+
         [HttpPut("/api/edit-shorten")]
-        public async Task<IActionResult> PutUrlShortenModel(string code, UrlDto url)
+        public async Task<IActionResult> PutUrlShorten(string code, UrlDto url)
         {
             // Find the existing record by the old code
             var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.ShortUrl == url.Url);
@@ -71,6 +87,31 @@ namespace URLshorten.Controllers
             });
         }
 
+        [HttpPut("/api/edit-origin")]
+        public async Task<IActionResult> PutUrlOrigin([FromBody] UrlDto url)
+        {
+            // Find the existing record by the old code
+            var existingUrl = await _context.UrlShortenModel.FirstOrDefaultAsync(u => u.Url == url.OldUrl);
+
+            if (existingUrl == null)
+            {
+                return NotFound($"No URL found.");
+            }
+
+            var result = url.NewUrl;
+
+            existingUrl.Url = result;
+
+            _context.UrlShortenModel.Update(existingUrl);
+            await _context.SaveChangesAsync();
+
+            return Ok(new UrlShortenResDto()
+            {
+                Url = result,
+            });
+        }
+
+
         [HttpPost("api/Shorten")]
         public async Task<ActionResult<UrlShortenModel>> PostUrlShortenModel(UrlDto url)
         {
@@ -90,11 +131,19 @@ namespace URLshorten.Controllers
             var randomCode = await _shortenService.GenerateUniqueCode();
             var result = $"{this.Request.Scheme}://{this.Request.Host}/{randomCode}";
 
+            // generate a qrcode to the shorten url for scanning
+
+            using var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(result, QRCodeGenerator.ECCLevel.Q);
+            BitmapByteQRCode bitmap = new BitmapByteQRCode(qrCodeData);
+            byte[] QrCode = bitmap.GetGraphic(20);            
+
             var urlShorten = new UrlShortenModel()
             {
                 Url = url.Url,
                 ShortUrl = result,
                 Code = randomCode,
+                QRImage = QrCode,
                 CreatedAt = DateTime.Now,
             };
 
